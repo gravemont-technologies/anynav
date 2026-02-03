@@ -1,0 +1,82 @@
+:root {
+  /* Premium Dark Theme Palette (HSL) */
+  --hue-primary: 210; /* Tech Blue */
+  --hue-accent: 180;  /* Cyan */
+  --hue-danger: 0;
+  
+  --color-bg-base: hsl(220, 20%, 8%);      /* Deep space black/blue */
+  --color-bg-surface: hsl(220, 15%, 12%);  /* Slightly lighter */
+  --color-bg-glass: hsla(220, 15%, 12%, 0.6); /* Glass effect */
+  
+  --color-text-main: hsl(0, 0%, 95%);
+  --color-text-muted: hsl(220, 10%, 65%);
+  
+  --color-primary: hsl(var(--hue-primary), 90%, 60%);
+  --color-accent: hsl(var(--hue-accent), 80%, 60%);
+  
+  --shadow-sm: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+  --shadow-glow: 0 0 15px hsla(var(--hue-primary), 80%, 60%, 0.3);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg-base);
+  color: var(--color-text-main);
+  line-height: 1.5;
+  overflow: hidden; /* App like */
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Scrollbar hide for clean UI */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-bg-surface);
+  border-radius: 99px;
+}
+
+/* Utilities */
+.glass-panel {
+  background: var(--color-bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid hsla(0, 0%, 100%, 0.1);
+  border-radius: var(--radius-md);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), hsl(210, 80%, 50%));
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--radius-lg);
+  font-weight: 600;
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  transition: var(--transition-base);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
