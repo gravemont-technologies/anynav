@@ -7,6 +7,7 @@ export default function MapCanvas(props) {
     const [lng] = useState(0);
     const [lat] = useState(0);
     const [zoom] = useState(1);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     // Initialize Map
     useEffect(() => {
@@ -34,12 +35,16 @@ export default function MapCanvas(props) {
             attributionControl: false
         });
 
+        map.current.on('load', () => {
+            setIsLoaded(true);
+        });
+
         map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
     }, [lng, lat, zoom]);
 
     // Handle Image Overlay
     useEffect(() => {
-        if (!map.current || !props.imageOverlay) return;
+        if (!map.current || !isLoaded || !props.imageOverlay) return;
 
         const sourceId = 'overlay-source';
         const layerId = 'overlay-layer';
@@ -69,11 +74,11 @@ export default function MapCanvas(props) {
         const bounds = new maplibregl.LngLatBounds([-0.001, -0.001], [0.001, 0.001]);
         map.current.fitBounds(bounds, { padding: 50 });
 
-    }, [props.imageOverlay]);
+    }, [props.imageOverlay, isLoaded]);
 
     // Graph Rendering (Nodes & Edges)
     useEffect(() => {
-        if (!map.current) return;
+        if (!map.current || !isLoaded) return;
         const sourceId = 'graph-source';
         const nodeLayerId = 'graph-nodes';
         const edgeLayerId = 'graph-edges';
@@ -108,13 +113,13 @@ export default function MapCanvas(props) {
                 }
             });
         } else {
-            map.current.getSource(sourceId).setData(props.graph);
+            map.current.getSource(sourceId).setData(props.graph || { type: 'FeatureCollection', features: [] });
         }
-    }, [props.graph]);
+    }, [props.graph, isLoaded]);
 
     // Active Path Rendering
     useEffect(() => {
-        if (!map.current) return;
+        if (!map.current || !isLoaded) return;
         const sourceId = 'path-source';
         const layerId = 'path-layer';
 
@@ -138,7 +143,7 @@ export default function MapCanvas(props) {
         } else {
             map.current.getSource(sourceId).setData(props.activePath || { type: 'FeatureCollection', features: [] });
         }
-    }, [props.activePath]);
+    }, [props.activePath, isLoaded]);
 
     // Interaction Handlers (Click)
     useEffect(() => {
